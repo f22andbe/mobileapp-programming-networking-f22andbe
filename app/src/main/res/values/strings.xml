@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Networking</string>
     <string name ="fetch_web_data">Get data</string>
+    <string name="clear_data">Clear data</string>
 </resources>

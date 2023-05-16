@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     @Override
     public void onPostExecute(String json) {
         /* parse json into Mountain objects */
-        mountainArrayList.clear();
+        //mountainArrayList.clear();
         mountainArrayList.addAll(gson.fromJson(json, type));
-        Log.d("onPostExecute(): ", mountainArrayList.toString());
+        //Log.d("onPostExecute(): ", mountainArrayList.toString());
         mAdapter.notifyDataSetChanged();
     }
 
@@ -82,6 +82,14 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
             /* get JSON data from webservice */
 
             new JsonTask(this).execute(JSON_URL);
+            return true;
+        }
+
+        if (id == R.id.action_clear_data) {
+            Log.d("onOptionItemSelected","clear data");
+            /* clear data */
+            mountainArrayList.clear();
+            mAdapter.notifyDataSetChanged();
             return true;
         }
 
