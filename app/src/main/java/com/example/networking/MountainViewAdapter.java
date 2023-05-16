@@ -1,7 +1,6 @@
 package com.example.networking;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +31,17 @@ public class MountainViewAdapter extends RecyclerView.Adapter<MountainViewAdapte
 
     @Override
     public void onBindViewHolder(MountainViewHolder holder, int position) {
-        holder.mountainName.setText(mountainArrayList.get(position).getName());
-        holder.mountainLocation.setText(mountainArrayList.get(position).getLocation());
-        Log.d("location in onBindViewHolder", mountainArrayList.get(position).getLocation());
-        Log.d("location in textView mountLocation", holder.mountainLocation.getText().toString());
-        holder.mountainLocation.setText(String.valueOf(mountainArrayList.get(position).getHeight()) );
+        holder.mountainName.setText("Name: " + mountainArrayList.get(position).getName());
+        holder.mountainLocation.setText("Location: " + mountainArrayList.get(position).getLocation());
+        holder.mountainHeight.setText("Height: " + mountainArrayList.get(position).getHeight() );
+        holder.mountainWiki.setText("Wiki: " + mountainArrayList.get(position).auxdata.getWiki());
+
+        if((position % 2) == 0) {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.lightgrey));
+        }else{
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.lightblue));
+        }
+
     }
 
     public int getItemCount() {
@@ -47,12 +52,18 @@ public class MountainViewAdapter extends RecyclerView.Adapter<MountainViewAdapte
         TextView mountainName;
         TextView mountainLocation;
         TextView mountainHeight;
+        TextView mountainWiki;
 
         public MountainViewHolder(@NonNull View itemView) {
             super(itemView);
             mountainName = itemView.findViewById(R.id.mountainname);
             mountainLocation = itemView.findViewById(R.id.mountainlocation);
             mountainHeight = itemView.findViewById(R.id.mountainheight);
+            mountainWiki = itemView.findViewById(R.id.mountainwiki);
         }
+
+
     }
+
+
 }
