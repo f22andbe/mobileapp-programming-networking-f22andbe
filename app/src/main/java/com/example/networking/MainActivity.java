@@ -19,53 +19,40 @@ import java.util.Scanner;
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
 
-    private final String JSON_URL = "HTTPS_URL_TO_JSON_DATA_CHANGE_THIS_URL";
-    private final String JSON_FILE = "mountains.json";
+    private final String JSON_URL = "https://mobprog.webug.se/json-api?login=brom";
+    //private final String JSON_FILE = "mountains.json";
     private String mountainsJSON;
     private ArrayList<Mountain> mountainArrayList;
     private Gson gson;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        /* get JSON data from webservice */
 
-        new JsonFile(this, this).execute(JSON_FILE);
+        new JsonTask(this).execute(JSON_URL);
+
+        /* Read in recyclerview */
+        recyclerView = findViewById(R.id.recyclerView);
+    }
+
+    /* parse JSON data */
+    @Override
+    public void onPostExecute(String json) {
         gson = new Gson();
-        mountainsJSON = readFile(JSON_FILE);
-
         Type type = new TypeToken<ArrayList<Mountain>>() {}.getType();
-        mountainArrayList = gson.fromJson(mountainsJSON, type);
-        Log.d("jsonfile", mountainsJSON);
-        Log.d("arraylist", mountainArrayList.toString());
-
-        for (int i=0; i < mountainArrayList.size(); i++){
-            Log.d("loop: ", "name: " + mountainArrayList.get(i).getName() + "\nlocation: " + mountainArrayList.get(i).getLocation() +"\nheight: " +
-                    mountainArrayList.get(i).getHeight());
-
-        }
+        mountainArrayList = gson.fromJson(json, type);
+        Log.d("onPostExecute(): ", mountainArrayList.toString());
 
         MountainViewAdapter mAdapter = new MountainViewAdapter(this, mountainArrayList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
-    @Override
-    public void onPostExecute(String json) {
-        Log.d("MainActivity", json);
-    }
 
-    @SuppressWarnings("SameParameterValue")
-    private String readFile(String fileName) {
-        try {
-            //noinspection CharsetObjectCanBeUsed
-            return new Scanner(getApplicationContext().getAssets().open(fileName), Charset.forName("UTF-8").name()).useDelimiter("\\A").next();
-        } catch (IOException e) {
-            Log.e("MainActivity", "Could not read file: " + fileName);
-            return null;
-        }
-    }
 
 }
