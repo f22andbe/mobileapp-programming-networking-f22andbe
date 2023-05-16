@@ -9,6 +9,7 @@ public class Mountain {
     String location;
     @SerializedName("size")
     int height;
+    WikiData auxdata;
 
 
 
@@ -55,6 +56,7 @@ public class Mountain {
                 "name='" + name + '\'' +
                 ", location='" + location + '\'' +
                 ", height=" + height +
+                ", auxdata=" + auxdata +
                 '}';
     }
 }
