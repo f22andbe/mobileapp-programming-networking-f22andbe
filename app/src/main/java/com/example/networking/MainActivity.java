@@ -2,6 +2,8 @@ package com.example.networking;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,32 +27,65 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     private ArrayList<Mountain> mountainArrayList;
     private Gson gson;
     RecyclerView recyclerView;
+    Type type;
+    MountainViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* get JSON data from webservice */
-
-        new JsonTask(this).execute(JSON_URL);
+        mountainArrayList = new ArrayList<Mountain>();
 
         /* Read in recyclerview */
         recyclerView = findViewById(R.id.recyclerView);
-    }
 
-    /* parse JSON data */
-    @Override
-    public void onPostExecute(String json) {
-        gson = new Gson();
-        Type type = new TypeToken<ArrayList<Mountain>>() {}.getType();
-        mountainArrayList = gson.fromJson(json, type);
-        Log.d("onPostExecute(): ", mountainArrayList.toString());
-
-        MountainViewAdapter mAdapter = new MountainViewAdapter(this, mountainArrayList);
+        /* Set up adapter */
+        mAdapter = new MountainViewAdapter(this, mountainArrayList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        /* setup JSON parser */
+        gson = new Gson();
+        type = new TypeToken<ArrayList<Mountain>>() {}.getType();
+
+    }
+
+
+    /* parse JSON data and update view */
+    @Override
+    public void onPostExecute(String json) {
+        /* parse json into Mountain objects */
+        mountainArrayList.clear();
+        mountainArrayList.addAll(gson.fromJson(json, type));
+        Log.d("onPostExecute(): ", mountainArrayList.toString());
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_get_data) {
+            Log.d("onOptionItemSelected","Get JSON data from web");
+            /* get JSON data from webservice */
+
+            new JsonTask(this).execute(JSON_URL);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
