@@ -71,12 +71,10 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        /* start JsonTask and fetch data */
         if (id == R.id.action_get_data) {
             Log.d("onOptionItemSelected","Get JSON data from web");
             /* get JSON data from webservice */
@@ -85,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
             return true;
         }
 
+        /* clear data and RecyclerView */
         if (id == R.id.action_clear_data) {
             Log.d("onOptionItemSelected","clear data");
             /* clear data */

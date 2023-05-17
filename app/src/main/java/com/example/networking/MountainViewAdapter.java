@@ -47,6 +47,7 @@ public class MountainViewAdapter extends RecyclerView.Adapter<MountainViewAdapte
     public int getItemCount() {
         return mountainArrayList.size();
     }
+
     public static class MountainViewHolder extends RecyclerView.ViewHolder {
 
         TextView mountainName;
@@ -61,8 +62,6 @@ public class MountainViewAdapter extends RecyclerView.Adapter<MountainViewAdapte
             mountainHeight = itemView.findViewById(R.id.mountainheight);
             mountainWiki = itemView.findViewById(R.id.mountainwiki);
         }
-
-
     }
 
 
